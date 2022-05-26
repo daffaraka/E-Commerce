@@ -15,11 +15,14 @@ class CreateDiscountsTable extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->unsignedBigInteger('product_id');
             $table->string('percentage');
             $table->date('start');
             $table->date('end');
             $table->timestamps();
+
+            $table->foreign('product_id')->references('id')->on('products')
+            ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

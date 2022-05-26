@@ -18,7 +18,7 @@ class ProductController extends Controller
         // $products = Product::query()->join('product_images', 'product_id', 'products.id')
         // ->select('products.*', 'product_images.image_name')
         // ->orderby('product_name', 'desc')->get();
-        $products = Product::with('images')->orderBy('id','desc')->get();
+        $products = Product::with(['images','discounts'])->orderBy('id','desc')->get();
         
         return view('admin.product.list', compact('products'));
     }

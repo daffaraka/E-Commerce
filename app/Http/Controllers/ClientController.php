@@ -20,7 +20,7 @@ class ClientController extends Controller
 
     public function show($id)
     {
-        $products = Product::find($id);
-        return view('client.product.detail-product',compact('products'));
+        $product = Product::with('images')->find($id);
+        return view('client.product.detail-product',compact('product'));
     }
 }

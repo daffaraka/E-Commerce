@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Login;
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\Toko;
 use App\Http\Controllers\ProductController;
@@ -10,6 +11,8 @@ use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\CouriersController;
+use App\Http\Controllers\TransactionController;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -27,17 +30,30 @@ Route::get('/', function () {
     return view('welcome');
 });
 // Route::get('/')
-// Auth::routes(['verify'=>true]);
+Auth::routes(['verify'=>true]);
 
 
 Route::get('/beranda' , function() {
     return view('client.layout');
 });
 
+Route::get('/tes',function() {
+    return view('client.transaction.tes');
+});
+
 Route::get('/details', [ClientController::class,'show'])->name('detailsProduct');
 
-Route::get('/product_list', [ClientController::class,'productList'])->name('productList');
-Route::get('/product_detail/{id}' , [ClientController::class,'show'])->name('productDetail');
+Route::get('/product/list', [ClientController::class,'productList'])->name('productList');
+Route::get('/product/detail/{id}' , [ClientController::class,'show'])->name('productDetail');
+Route::get('/cart', [CartController::class,'index'])->name('cart.index');
+Route::post('/product/add-to-cart/{id}', [CartController::class,'add_to_cart'])->name('cart.add-to-cart');
+
+Route::get('/{id}/transaction',[TransactionController::class,'create'])->name('transaction.create');
+Route::post('/{id}/transaction/ongkir', [TransactionController::class,'check_ongkir'])->name('ongkir.ongkirCheck');
+Route::get('/{id}/transaction/cities/{province_id}', [TransactionController::class,'getCities'])->name('ongkir.getCities');
+Route::get('/{id}/transaction/store',[TransactionController::class,'store'])->name('transaction.store');
+
+
 Route::prefix('user')->name('user.')->group(function(){
     Route::middleware(['guest:web'])->group(function(){
         Route::get('login',[Login::class,'login'])->name('login');

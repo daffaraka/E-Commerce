@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(ProvinceCitySeeder::class);
+
         // \App\Models\User::factory(10)->create();
         DB::table('admins')->insert([
             'name' => 'admin',

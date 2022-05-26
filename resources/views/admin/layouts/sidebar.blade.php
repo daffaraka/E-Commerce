@@ -22,8 +22,8 @@
               Products
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
+          <li class="nav-item ">
+            <a class="nav-link {{ Request::is('admin/courier') ? 'active' : '' }}" href="{{route('admin.couriers.index')}}" >
               <span data-feather="package"></span>
               Courier
             </a>

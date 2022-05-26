@@ -21,7 +21,7 @@
                 <tr>
                     <td>{{$key + 1}}</th>
                     <td>{{$discount->product->product_name}}</td>
-                    <td>{{$discount->percentage}}</td>
+                    <td>{{$discount->percentage}}%</td>
                     <td>{{$discount->start}}</td>
                     <td>{{$discount->end}}</td>
                     <td>
