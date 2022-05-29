@@ -28,7 +28,6 @@
                                 @csrf
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-cart-plus" aria-hidden="true"></i> Add to cart</button>
                             </form>
-                            <a href="#" class="btn btn-warning"> <i class="fa fa-money" aria-hidden="true"></i></i>  Checkout</a>
                         </div>
                         {{-- <div class="stars">
                             <span class="fa fa-star star-active"></span>

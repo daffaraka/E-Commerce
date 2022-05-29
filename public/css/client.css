@@ -197,6 +197,10 @@ body {
     font-weight: bold;
 }
 
+.td-center {
+    text-align: center;
+}
+
 .price {
     font-size: 18px;
 }

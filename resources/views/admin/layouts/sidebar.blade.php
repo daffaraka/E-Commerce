@@ -22,16 +22,22 @@
               Products
             </a>
           </li>
-          <li class="nav-item ">
-            <a class="nav-link {{ Request::is('admin/courier') ? 'active' : '' }}" href="{{route('admin.couriers.index')}}" >
-              <span data-feather="package"></span>
-              Courier
-            </a>
-          </li>
+            {{-- <li class="nav-item ">
+              <a class="nav-link {{ Request::is('admin/courier') ? 'active' : '' }}" href="{{route('admin.couriers.index')}}" >
+                <span data-feather="package"></span>
+                Courier
+              </a>
+            </li> --}}
           <li class="nav-item">
             <a class="nav-link {{ Request::is('admin/list-discount') ? 'active' : '' }}" href="{{route('admin.discount-list')}}">
               <span data-feather="percent"></span>
               Discount
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{ Request::is('admin/transaction') ? 'active' : '' }}" href="{{route('admin.transaction-index')}}">
+              <span data-feather="bookmark"></span>
+              Transaction
             </a>
           </li>
           <li class="nav-item">

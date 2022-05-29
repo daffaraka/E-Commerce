@@ -14,7 +14,6 @@
                 <th scope="col" width="150px">Image</th>
                 <th scope="col">Name</th>
                 <th scope="col">Price</th>
-                <th scope="col">Rate</th>
                 <th scope="col">Discount</th>
                 <th scope="col">Stock</th>
                 <th scope="col">Weight</th>
@@ -38,10 +37,13 @@
                 @endphp
             </td>
 
-            <td>{{ $product->product_rate }}</td>
-            @foreach ($product->discounts as $discount)
-                <td> {{ $discount->percentage }} % </td>
-            @endforeach
+
+            @forelse ($product->discounts as $discount)
+                <td> {{ $discount->percentage }} %</td>
+            @empty
+                <td>You dont add discount yet </td>
+            @endforelse ()
+
             <td>{{ $product->stock }}</td>
             <td>{{ $product->weight }} gram</td>
             <td>

@@ -56,7 +56,7 @@
                             <i class="fa fa-user-circle"></i> {{ Auth::user()->name }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                            <li><a class="dropdown-item" href="{{ route('cart.index') }}"> <i class="fa fa-cart-plus"
+                            <li><a class="dropdown-item" href="{{ route('user.cart.index') }}"> <i class="fa fa-cart-plus"
                                         aria-hidden="true"></i> Cart</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -90,8 +90,8 @@
                 <div class="card-body">
                     <div class="container">
                         <div class="row">
-                            <div class="col-lg-6 pb-5">
-                                <form action="{{ route('transaction.store', $cart->id) }}">
+                            <div class="col-lg-6 pb-5"> 
+                                <form action="{{ route('transaction.store',$cart->id) }}" method="POST">
                                     @csrf
                                     <div class="card">
                                         <div class="card-body">
@@ -111,6 +111,7 @@
                                                 <select class="form-control kota-asal" name="city_origin">
                                                     <option value="">-- pilih kota asal --</option>
                                                 </select>
+                                                <hr>
                                             </div>
                                             <h3>TUJUAN PENGIRIMAN</h3>
                                             <hr>
@@ -130,13 +131,24 @@
                                                 <select class="form-control kota-tujuan" name="city_destination">
                                                     <option value="">-- pilih kota tujuan --</option>
                                                 </select>
+                                                <hr>
+                                            </div>
+                                            <div class="card-body px-2">
+                                                <h3>ALAMAT LENGKAP</h3>
+                                                <hr>
+                                                <div class="form-group">
+                                                    <label class="font-weight-bold">Alamat anda</label>
+                                                    <input type="text" class="form-control" name="address" id="address"
+                                                        placeholder="Masukkan Berat (GRAM)"> </input>
+                                                </div>
+                                                <hr>
                                             </div>
 
-                                            <div class="card-body px-2">
+                                            <div class="card-body px-2 pt-0">
                                                 <h3>KURIR</h3>
                                                 <hr>
                                                 <div class="form-group">
-                                                    <label>PROVINSI TUJUAN</label>
+                                                    <label>JENIS KURIR</label>
                                                     <select class="form-control kurir" name="courier">
                                                         <option value="0">-- pilih kurir --</option>
                                                         <option value="jne">JNE</option>
@@ -149,19 +161,12 @@
                                                     <input type="number" class="form-control" name="weight"
                                                         id="weight" placeholder="Masukkan Berat (GRAM)">
                                                 </div>
-                                            </div>
-
-                                            <div class="card-body px-2">
-                                                <h3>ALAMAT LENGKAP</h3>
                                                 <hr>
-                                                <div class="form-group">
-                                                    <label class="font-weight-bold">ALAMAT</label>
-                                                    <textarea type="text" class="form-control" name="address" id="address"
-                                                        placeholder="Masukkan Berat (GRAM)"> </textarea>
-                                                </div>
                                             </div>
 
-                                            <div class="card-body px-2">
+                                           
+
+                                            {{-- <div class="card-body px-2">
                                                 <h3>TOTAL</h3>
                                                 <hr>
                                                 <div class="form-group">
@@ -174,7 +179,7 @@
                                                     <input type="text" class="form-control" name="address"
                                                         id="address" placeholder="Masukkan Berat (GRAM)"> </input>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="row mt-3">
                                                 <div class="col-md-12">
                                                     <div class="card d-none ongkir">
@@ -203,48 +208,55 @@
                                     <div class="card-header">
                                         <h5 class="card-title fw-bold">Product Detail</h5>
                                     </div>
-                                    @foreach ($cart->products->images as $item)
+                                    @foreach ($cart->products->first()->images as $item)
                                         <img class="img-thumbnail d-block m-auto w-50 mb-4 mt-2"
-                                            src="{{ asset('images/' . $item->image_name) }}" alt="">
+                                            src="{{ asset('images/'.$item->image_name) }}" alt="">
                                     @endforeach
 
                                     <div class="card-body">
 
-                                        <h3 class="fw-bold">{{ $cart->products->product_name }}</h3>
+                                        <h3 class="fw-bold">{{ $cart->products->first()->product_name }}</h3>
                                         <h3><i class="fa-solid fa-sack-dollar"></i>
-                                            {{ number_format($cart->products->price, 2) }}</h3>
+                                            {{ number_format($cart->products->first()->price, 2) }}</h3>
                                         <div class="form-group">
                                             <b>Product Description</b>
-                                            <p>{{ $cart->products->description }}</p>
+                                            <p>{{ $cart->products->first()->description }}</p>
                                         </div>
-                                        <h6> <i class="fa fa-weight fa-lg"></i> {{ $cart->products->weight }} Kg</h5>
+                                        <h6> <i class="fa fa-weight fa-lg"></i> {{ $cart->products->first()->weight }} Kg</h5>
                                     </div>
 
                                    
 
                                 </div>
-                                <div class="card mt-2">
-                                    <div class="card-header">
-                                        <h4 class="p-0">Total Payment  </h4> <br>
+
+                                {{-- <div class="card mt-2">
+                                    <div class="card-header pb-0">
+                                        <h5 class="p-0">Payment Detail </h5> <br>
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <h6>Quantity </h6>
                                             </div>
-                                            <div class="col-md-9">
+                                            <div class="col-md-8">
                                                 : {{ $cart->qty }}
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
+                                                <h6>Product Name </h6>
+                                            </div>
+                                            <div class="col-md-8">
+                                                : {{ $cart->products->product_name }}
+                                            </div>
+                                            <div class="col-md-4">
                                                 <h6>Price </h6>
                                             </div>
-                                            <div class="col-md-6">
-                                                : {{ number_format($cart->products->price, 2) }}
+                                            <div class="col-md-8">
+                                                : Rp .{{ number_format($cart->products->price) }}
                                             </div>
                                         </div>
 
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
 
                         </div>

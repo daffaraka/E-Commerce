@@ -15,17 +15,18 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->dateTime('timeout');
-            $table->text('address');
-            $table->text('regency');
-            $table->text('province');
+            $table->dateTime('timeout')->nullable();
+            $table->string('address');
+            $table->string('regency');
+            $table->string('province');
             $table->integer('total');
             $table->integer('shipping_cost');
             $table->integer('sub_total');
+            $table->string('courier');
             $table->unsignedBigInteger('user_id');
             $table->text('proof_of_payment')->nullable();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->text('status');
             
             $table->timestamps();

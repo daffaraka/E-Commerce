@@ -26,31 +26,33 @@
 
                                 @foreach ($cart as $data)
                                     <tr>
-                                        @foreach ($data->products->images as $item)
+                                        @foreach ($data->products as $key => $item)
                                             <th scope="row">
-                                                <img src="{{ asset('images/' . $item->image_name) }}"
+                                                <img src="{{ asset('images/' . $item->images->first()->image_name) }}"
                                                     class="border" style="width:120px;" alt="">
                                             </th>
+                                            <td class="pl-5 m-auto ">{{ $item->product_name }}</td>
+                                            <td class="fw-bold"> Rp.{{ number_format($item->price, 2) }}</td>
+
+                                            {{-- <form action="{{ route('updateQty', $data->cart_id) }}" method="get"> --}}
+                                            <td>
+                                                <input id="ticketNum" type="number" name="product_quantity" min="1"
+                                                    value="{{ $data->qty }}" style="width: 50px;">
+                                            </td>
+                                            <td>
                                         @endforeach
 
 
-                                        <td class="pl-5">{{ $data->products->product_name }}</td>
-                                        <td>Rp.{{ number_format($data->products->price, 2) }}</td>
 
-                                        {{-- <form action="{{ route('updateQty', $data->cart_id) }}" method="get"> --}}
-                                        <td>
-                                            <input id="ticketNum" type="number" name="product_quantity" min="1"
-                                                value="{{ $data->qty }}" style="width: 50px;">
-                                        </td>
-                                        <td>
+                                        {{-- <button type="submit" class="btn btn-warning fw-bold">Update Qty</button> --}}
+                                        {{-- </form> --}}
 
-                                            <button type="submit" class="btn btn-warning fw-bold">Update Qty</button>
-                                            {{-- </form> --}}
+                                        <a href="{{ route('transaction.create', $data->id) }}" type="submit"
+                                            class="btn btn-info fw-bold"> <i class="fa fa-money"></i> Checkout </a>
 
-                                            <a href="{{route('transaction.create',$data->id)}}" type="submit" class="btn btn-info fw-bold"> <i class="fa fa-money"></i> Checkout </a>
-                                            <form class="mt-2 d-inline ">
-                                                <a href="#" class="btn btn-danger "> <i class="fa fa-trash"></i> Delete</a>
-                                            </form>
+                                        <a href="{{ route('user.cart.delete', $data->id) }}" class="btn btn-danger "> <i
+                                                class="fa fa-trash"></i> Delete</a>
+
 
 
                                     </tr>

@@ -25,7 +25,7 @@ class ProductCategoryController extends Controller
     public  function edit($id){
         $productCategory = ProductCategory::find($id);
         
-        return view('admin.product-category.edit', compact('productCategory'));
+        return view('admin.product-category.edit', compact('productcategories'));
     }
 
     public function update(Request $request, $id){

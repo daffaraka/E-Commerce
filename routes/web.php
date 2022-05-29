@@ -45,13 +45,12 @@ Route::get('/details', [ClientController::class,'show'])->name('detailsProduct')
 
 Route::get('/product/list', [ClientController::class,'productList'])->name('productList');
 Route::get('/product/detail/{id}' , [ClientController::class,'show'])->name('productDetail');
-Route::get('/cart', [CartController::class,'index'])->name('cart.index');
 Route::post('/product/add-to-cart/{id}', [CartController::class,'add_to_cart'])->name('cart.add-to-cart');
 
 Route::get('/{id}/transaction',[TransactionController::class,'create'])->name('transaction.create');
 Route::post('/{id}/transaction/ongkir', [TransactionController::class,'check_ongkir'])->name('ongkir.ongkirCheck');
 Route::get('/{id}/transaction/cities/{province_id}', [TransactionController::class,'getCities'])->name('ongkir.getCities');
-Route::get('/{id}/transaction/store',[TransactionController::class,'store'])->name('transaction.store');
+Route::post('/{id}/transaction/store',[TransactionController::class,'store'])->name('transaction.store');
 
 
 Route::prefix('user')->name('user.')->group(function(){
@@ -66,6 +65,12 @@ Route::prefix('user')->name('user.')->group(function(){
         Route::view('profile',[Login::class,'profile'])->name('profile');
         Route::post('/logout',[Login::class,'logout'])->name('logout');
         // route::get('toko',[Toko::class,'toko'])->name('home');
+        Route::get('/cart', [ClientController::class,'cart'])->name('cart.index');
+        Route::get('/cart/delete/{id}', [ClientController::class,'delete'])->name('cart.delete');
+        Route::get('/transaction-list',[ClientController::class,'transaction'])->name('transaction.list');
+        Route::get('/{id}/upload-proof-payment',[ClientController::class,'createProofOfPayment'])->name('transaction.proofOfPayment');
+        Route::post('/{id}/upload-proof-payment',[ClientController::class,'uploadProofOfPayment'])->name('transaction.proofOfPayment');
+
     });
 
 });
@@ -120,6 +125,9 @@ Route::prefix('admin')->name('admin.')->group(function(){
             Route::post('couriers/{id}/update',[ CouriersController::class,'update']);
             Route::delete('couriers/{id}/delete', [CouriersController::class, 'delete'])->name('couriers.delete');
 
+            // Transaction
+            Route::get('transactions', [TransactionController::class, 'indexOnAdmin'])->name('transaction-index');
+        
         // });
 
 });

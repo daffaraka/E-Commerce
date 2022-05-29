@@ -9,32 +9,27 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-   
+
     public function __construct()
     {
         $this->middleware('auth');
-
     }
 
     public function index()
     {
         $cart = Cart::with('products.images')->get();
         // dd($cart);
-        return view('admin.cart.cart-index',compact('cart'));
+        return view('admin.cart.cart-index', compact('cart'));
     }
 
-   
-    public function create()
-    {
-        //
-    }
 
-   
+
+
     public function add_to_cart($id)
     {
         $product = Product::find($id);
 
-      
+
         $cartAttribute = [];
         $cartAttribute['user_id'] = Auth::user()->id;
         $cartAttribute['product_id'] = $product->id;
@@ -43,9 +38,34 @@ class CartController extends Controller
 
 
         Cart::create($cartAttribute);
-
-        return redirect()->route('cart.index');
         
+        return redirect()->route('user.cart.index');
+    }
+
+    public function decrementQty($id)
+    {
+        $cart = Cart::find($id);
+        if ($cart->product->stock > 0) {
+            if ($cart->qty > 1) {
+                $cart->qty -= 1;
+                $cart->product->stock += 1;
+                $cart->save();
+            } else {
+                $this->delete($id);
+            }
+        }
+
+        return redirect()->refresh();
+    }
+
+    public function incrementQty($id)
+    {
+        $cart = Cart::find($id);
+        $cart->qty += 1;
+        $cart->product->stock -= 1;
+        $cart->save();
+
+        return redirect()->refresh();
     }
 
     public function show(Cart $cart)
@@ -53,7 +73,7 @@ class CartController extends Controller
         //
     }
 
-  
+
     public function edit(Cart $cart)
     {
         //
@@ -64,8 +84,16 @@ class CartController extends Controller
         //
     }
 
-    public function destroy(Cart $cart)
+    public function destroy($id,Cart $cart)
     {
-        //
+        $cart = Cart::find($id);
+        
+        if($cart != null)
+        {
+            $cart->delete();
+            return redirect()->refresh();
+        }
+
+        return redirect()->refresh();
     }
 }

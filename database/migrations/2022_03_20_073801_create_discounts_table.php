@@ -16,7 +16,7 @@ class CreateDiscountsTable extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id');
-            $table->string('percentage');
+            $table->integer('percentage');
             $table->date('start');
             $table->date('end');
             $table->timestamps();
